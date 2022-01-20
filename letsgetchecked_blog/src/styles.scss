@@ -31,4 +31,5 @@ div.header__notifications {
     position: fixed;
     width: 100%;
     top: $header-height;
+    z-index: 100;
 }

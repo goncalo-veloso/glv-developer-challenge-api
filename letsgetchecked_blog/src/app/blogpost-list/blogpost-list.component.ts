@@ -3,6 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 import { Blogpost } from '../models/blogpost';
 import { BlogpostsService } from '../services/blogposts.service';
+import { ErrorMessageService } from '../services/error-message.service';
 
 @Component({
   selector: 'app-blogpost-list',
@@ -13,7 +14,7 @@ export class BlogpostListComponent implements OnInit, OnDestroy {
   public fetchedBlogposts: Blogpost[] = [];
   private subscription!: Subscription;
 
-  constructor(private titleService: Title, private blogpostService: BlogpostsService) { }
+  constructor(private errorMessageService: ErrorMessageService, private titleService: Title, private blogpostService: BlogpostsService) { }
 
   ngOnInit(): void {
     this.titleService.setTitle("Let's Get Checked - Blogposts");
@@ -34,7 +35,7 @@ export class BlogpostListComponent implements OnInit, OnDestroy {
 
         else return 0;
       })
-    });
+    }, () => this.errorMessageService.addMessage('Error fetching blogposts.'));
   }
 
   ngOnDestroy(): void {

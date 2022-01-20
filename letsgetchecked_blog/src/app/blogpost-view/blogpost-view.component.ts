@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { Blogpost } from '../models/blogpost';
 import { BlogpostComment, BlogpostCommentJSON } from '../models/blogpost-comment';
 import { BlogpostsService } from '../services/blogposts.service';
+import { ErrorMessageService } from '../services/error-message.service';
 
 @Component({
   selector: 'app-blogpost-view',
@@ -27,7 +28,7 @@ export class BlogpostViewComponent implements OnInit {
    */
   modifyingComment: BlogpostComment | null = null;
 
-  constructor(private titleService: Title, private route: ActivatedRoute, private blogpostsService: BlogpostsService) { }
+  constructor(private errorMessageService: ErrorMessageService, private titleService: Title, private route: ActivatedRoute, private blogpostsService: BlogpostsService) { }
 
   ngOnInit(): void {
     this.paramsSubscription = this.route.params.subscribe(params => {
@@ -36,10 +37,10 @@ export class BlogpostViewComponent implements OnInit {
       this.blogpostSubscription = this.blogpostsService.GetBlogPostById(this.blogpostId).subscribe((blogpost: Blogpost) => {
         this.blogpost = blogpost;
         this.titleService.setTitle("Let's Get Checked - " + blogpost.title);
-      });
+      }, () => this.errorMessageService.addMessage('Error fetching blogpost details.'));
 
       this.fetchComments();
-    });
+    }, () => this.errorMessageService.addMessage('Error fetching blogpost id.'));
   }
 
   private fetchComments(): void {
@@ -50,7 +51,7 @@ export class BlogpostViewComponent implements OnInit {
 
       this.blogpostGetCommentsSubscription = this.blogpostsService.GetBlogPostCommentsById(this.blogpostId).subscribe((comments: any[]) => {
         this.blogpostComments = comments;
-      });
+      }, () => this.errorMessageService.addMessage('Error fetching comments.'));
     }
   }
 
@@ -72,7 +73,7 @@ export class BlogpostViewComponent implements OnInit {
       blogpostComment.date = new Date();
       this.blogpostPostCommentSubscription = this.blogpostsService.PostCommentOnBlogpost(this.blogpostId, new BlogpostCommentJSON(blogpostComment)).subscribe((data: BlogpostComment) => {
         this.fetchComments();
-      });
+      }, () => this.errorMessageService.addMessage('Error posting comment.'));
       this.showPostCommentForm = false;
     }
   }
@@ -82,7 +83,7 @@ export class BlogpostViewComponent implements OnInit {
       blogpostComment.date = new Date();
       this.blogpostUpdateCommentSubscription = this.blogpostsService.UpdateComment(new BlogpostCommentJSON(blogpostComment)).subscribe((data: BlogpostComment) => {
         this.fetchComments();
-      });
+      }, () => this.errorMessageService.addMessage('Error updating comment.'));
 
       this.modifyingComment = null;
     }
