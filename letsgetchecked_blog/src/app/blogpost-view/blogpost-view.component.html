@@ -1,0 +1,51 @@
+<app-blogpost [blogpost]="blogpost" [showDetails]="true"></app-blogpost>
+<ng-container *ngIf="!blogpost">
+    <p>Loading blogpost...</p>
+</ng-container>
+
+
+<div class="card p-3 mt-3">
+    <h2>Comments</h2>
+    <hr>
+    <!-- Loading blogpost comments -->
+    <ng-container *ngIf="!blogpostComments">
+        <p>Loading blogpost comments...</p>
+    </ng-container>
+
+    <!-- No comments -->
+    <ng-container *ngIf="blogpostComments && blogpostComments.length == 0">
+        <p>No comments yet!</p>
+    </ng-container>
+
+    <!-- List comments -->
+    <ng-container *ngIf="blogpostComments && blogpostComments.length > 0">
+        <div class="row">
+            <div class="col-12" *ngFor="let comment of blogpostComments">
+                <div class="card m-3 p-3">
+                    <ng-container *ngIf="modifyingComment == null || modifyingComment.id != comment.id">
+                        <div class="row">
+                            <h2 class="col-6 my-auto text-left">{{ comment.user }}</h2>
+                            <p class="col-6 my-auto text-right">{{ comment.date | date:'shortDate' }}</p>
+                        </div>
+                        <hr>
+
+                        <p class="mb-3">{{ comment.content }}</p>
+                        <button type="button" class="ml-auto btn btn-primary"
+                            (click)="editComment(comment)">Edit</button>
+                    </ng-container>
+
+                    <app-blogpost-comment-form *ngIf="modifyingComment!= null && modifyingComment.id == comment.id"
+                        [model]="modifyingComment" (onSubmitEvent)="onCommentEdit($event)"
+                        (onCancelEvent)="editComment(null)"></app-blogpost-comment-form>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+    <hr>
+
+    <!-- Post comment -->
+    <button type="button" *ngIf="!showPostCommentForm" (click)="toggleCommentForm()" id="post-comment-button" class="btn btn-primary ml-auto">Post
+        Comment</button>
+    <app-blogpost-comment-form *ngIf="showPostCommentForm" (onSubmitEvent)="onCommentSubmit($event)"
+        (onCancelEvent)="toggleCommentForm()"></app-blogpost-comment-form>
+</div>

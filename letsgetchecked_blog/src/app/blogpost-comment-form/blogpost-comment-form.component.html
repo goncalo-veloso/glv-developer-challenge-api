@@ -1,0 +1,23 @@
+<form #postCommentForm="ngForm" (ngSubmit)="onSubmit()">
+    <label for="user">User</label>
+    <input type="text" required id="user" name="user" class="form-control" [(ngModel)]="model.user" #user="ngModel">
+    <div *ngIf="user.invalid && (user.dirty || user.touched)" class="alert alert-danger">
+        <div *ngIf="user.errors?.['required']">
+            This field is required.
+        </div>
+    </div>
+
+    <label for="content">Content</label>
+    <input type="textarea" required id="content" name="content" class="form-control" [(ngModel)]="model.content" #content="ngModel">
+    <div *ngIf="content.invalid && (content.dirty || content.touched)" class="alert alert-danger">
+        <div *ngIf="content.errors?.['required']">
+            This field is required.
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mt-3 text-right">
+            <button class="btn btn-secondary" type="button" (click)="onCancel()">Cancel</button>
+            <button class="btn btn-primary" type="submit" [disabled]="postCommentForm.invalid">Submit</button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,28 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';
+
+$header-height: 60px;
+
+div.header--fixed {
+    position: fixed;
+    z-index: 100;
+    background-color: white;
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid black;
+    height: $header-height;
+}
+
+div.container--main {
+    padding-top: $header-height;
+}
+
+div.blogpost_list__blogpost {
+    cursor: pointer;
+
+    &:hover {
+        background-color: azure;
+    }
+}

@@ -1,0 +1,12 @@
+<ng-container *ngIf="blogpost">
+    <div [routerLink]="['/blogpost/', blogpost.id]" class="card my-1 p-3 blogpost_list__blogpost">
+        <div class="row mt-3">
+            <h2 class="col-6 my-auto text-left">{{ blogpost.author}}</h2>
+            <p class="col-6 my-auto text-right">{{ blogpost.publish_date | date:'shortDate'}}</p>
+        </div>
+        <hr>
+        <h3>{{ blogpost.title }}</h3>
+        <span class="mb-3">{{ blogpost.description }}</span>
+        <span id="blogpost__content" *ngIf="showDetails" [innerHtml]="blogpost.content"></span>
+    </div>
+</ng-container>
