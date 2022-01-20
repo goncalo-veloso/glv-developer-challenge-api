@@ -1,3 +1,11 @@
 <div class="header--fixed">
     <h1>{{ title }}</h1>
 </div>
+<div class="header__notifications">
+    <div *ngFor="let errorMessage of errorMessages | async; index as index" class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ errorMessage }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="removeMessage(index)">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</div>

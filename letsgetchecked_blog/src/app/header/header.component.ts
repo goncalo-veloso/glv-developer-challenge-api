@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { ErrorMessageService } from '../services/error-message.service';
 
 @Component({
   selector: 'app-header',
@@ -7,10 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
   title: string = "Let's Get Checked - Blog";
-  
-  constructor() { }
+  errorMessages: Observable<string[]> | undefined;
+
+  constructor(private errorMessageService: ErrorMessageService) { }
 
   ngOnInit(): void {
+    this.errorMessages = this.errorMessageService.getMessages();
+  }
+
+  removeMessage(index: number): void {
+    this.errorMessageService.removeMessage(index);
   }
 
 }

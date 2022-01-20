@@ -26,3 +26,9 @@ div.blogpost_list__blogpost {
         background-color: azure;
     }
 }
+
+div.header__notifications {
+    position: fixed;
+    width: 100%;
+    top: $header-height;
+}
