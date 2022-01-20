@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Blogpost } from '../models/blogpost';
@@ -26,7 +27,7 @@ export class BlogpostViewComponent implements OnInit {
    */
   modifyingComment: BlogpostComment | null = null;
 
-  constructor(private route: ActivatedRoute, private blogpostsService: BlogpostsService) { }
+  constructor(private titleService: Title, private route: ActivatedRoute, private blogpostsService: BlogpostsService) { }
 
   ngOnInit(): void {
     this.paramsSubscription = this.route.params.subscribe(params => {
@@ -34,6 +35,7 @@ export class BlogpostViewComponent implements OnInit {
 
       this.blogpostSubscription = this.blogpostsService.GetBlogPostById(this.blogpostId).subscribe((blogpost: Blogpost) => {
         this.blogpost = blogpost;
+        this.titleService.setTitle("Let's Get Checked - " + blogpost.title);
       });
 
       this.fetchComments();
